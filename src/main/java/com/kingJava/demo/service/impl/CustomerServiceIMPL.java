@@ -94,4 +94,34 @@ public class CustomerServiceIMPL implements CustomerService {
         }
         return customerDTOList;
     }
+
+    @Override
+    public String deleteCustomer(int customerId) {
+        if(customerRepo.existsById(customerId)) {
+            customerRepo.deleteById(customerId);
+            return "Customer deleted sucessfully.";
+        }else{
+            return "Customer not found";
+        }
+    }
+
+    @Override
+    public List<CustomerDTO> getByActiveStatus(boolean status) {
+        List<Customer> customers = customerRepo.findAllByActiveEquals(status);
+        List<CustomerDTO> customerDTOList = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            CustomerDTO customerDTO = new CustomerDTO(
+                    customer.getCustomerId(),
+                    customer.getCustomerName(),
+                    customer.getCustomerAddress(),
+                    customer.getCustomerSalary(),
+                    customer.getCustomerContact(),
+                    customer.getNic(),
+                    customer.isActive()
+            );
+            customerDTOList.add(customerDTO);
+        }
+        return customerDTOList;
+    }
 }

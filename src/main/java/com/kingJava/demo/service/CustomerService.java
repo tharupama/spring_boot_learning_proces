@@ -15,4 +15,10 @@ public interface CustomerService {
     public String updateCustomer(CustomerUpdateDTO customerUpdateDTO);
 
     List<CustomerDTO> getAllCustomers();
+
+    String deleteCustomer(int customerId);
+
+    List<CustomerDTO> getByActiveStatus(boolean status);
+
+
 }

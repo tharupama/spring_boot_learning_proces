@@ -46,6 +46,16 @@ public class CustomerController {
         return allCustomers;
     }
 
+    @DeleteMapping("/delete/{id}")
+    public String deleteCustomer(@PathVariable(value="id") int customerId) {
+    String deleted = customerService.deleteCustomer(customerId);
+    return deleted;
+    }
 
+    @GetMapping("/get-by-active-status/{status}")
+    public List<CustomerDTO> getByActiveStatus(boolean status) {
+        List<CustomerDTO> correspondingCustomers = customerService.getByActiveStatus(status);
+        return correspondingCustomers;
+    }
 
-}
+    }//class close tag
