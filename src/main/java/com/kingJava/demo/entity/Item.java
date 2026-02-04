@@ -2,11 +2,16 @@ package com.kingJava.demo.entity;
 
 import com.kingJava.demo.entity.enums.MeasuringUnitType;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name="Item")
 @NoArgsConstructor
+@AllArgsConstructor
+//@Getter
+//@Setter
+//@ToString
+@Data//include getter setter and to string,
 public class Item {
     @Id
     @Column(name="item_id", length=50)

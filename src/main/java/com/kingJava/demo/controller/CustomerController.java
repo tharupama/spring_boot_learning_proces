@@ -55,7 +55,7 @@ public class CustomerController {
     @GetMapping("/get-by-active-status/{status}")
     public List<CustomerDTO> getByActiveStatus(boolean status) {
         List<CustomerDTO> correspondingCustomers = customerService.getByActiveStatus(status);
-        return correspondingCustomers;
+           return correspondingCustomers;
     }
 
     }//class close tag
