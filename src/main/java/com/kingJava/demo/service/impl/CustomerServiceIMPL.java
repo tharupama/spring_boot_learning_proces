@@ -3,6 +3,7 @@ package com.kingJava.demo.service.impl;
 import com.kingJava.demo.dto.CustomerDTO;
 import com.kingJava.demo.dto.request.CustomerUpdateDTO;
 import com.kingJava.demo.entity.Customer;
+import com.kingJava.demo.exception.NotFoundException;
 import com.kingJava.demo.repo.CustomerRepo;
 import com.kingJava.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,21 +79,27 @@ public class CustomerServiceIMPL implements CustomerService {
 
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> customers = customerRepo.findAll();
-        List<CustomerDTO> customerDTOList = new ArrayList<>();
 
-        for (Customer customer : customers) {
-            CustomerDTO customerDTO = new CustomerDTO(
-                    customer.getCustomerId(),
-                    customer.getCustomerName(),
-                    customer.getCustomerAddress(),
-                    customer.getCustomerSalary(),
-                    customer.getCustomerContact(),
-                    customer.getNic(),
-                    customer.isActive()
-            );
-            customerDTOList.add(customerDTO);
+        if (customers.size()>0) {
+            List<CustomerDTO> customerDTOList = new ArrayList<>();
+
+            for (Customer customer : customers) {
+                CustomerDTO customerDTO = new CustomerDTO(
+                        customer.getCustomerId(),
+                        customer.getCustomerName(),
+                        customer.getCustomerAddress(),
+                        customer.getCustomerSalary(),
+                        customer.getCustomerContact(),
+                        customer.getNic(),
+                        customer.isActive()
+                );
+                customerDTOList.add(customerDTO);
+            }
+            return customerDTOList;
+        }else{
+            throw new NotFoundException("not find customers");//have to create not found exception in exception folder
+            //and this is the userdefine notfound exception, and we have to give new advice in AppWideExceptionHandler to handle standerd way
         }
-        return customerDTOList;
     }
 
     @Override

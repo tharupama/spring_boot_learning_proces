@@ -3,8 +3,11 @@ package com.kingJava.demo.controller;
 import com.kingJava.demo.dto.CustomerDTO;
 import com.kingJava.demo.dto.request.CustomerUpdateDTO;
 import com.kingJava.demo.service.CustomerService;
+import com.kingJava.demo.util.StanderdResponse;
 import jakarta.servlet.ServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,10 +43,17 @@ public class CustomerController {
 
     }
 
+//    @GetMapping("/get-all-customers")
+//    public List<CustomerDTO> getAllCustomers() {
+//        List<CustomerDTO> allCustomers = customerService.getAllCustomers();
+//        return allCustomers;
+//    }
+
     @GetMapping("/get-all-customers")
-    public List<CustomerDTO> getAllCustomers() {
+    public ResponseEntity<StanderdResponse> getAllCustomers() {
         List<CustomerDTO> allCustomers = customerService.getAllCustomers();
-        return allCustomers;
+
+        return new ResponseEntity<StanderdResponse>(new StanderdResponse(200,"sucess",allCustomers),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

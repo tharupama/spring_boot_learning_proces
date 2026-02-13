@@ -4,6 +4,9 @@ import com.kingJava.demo.entity.enums.MeasuringUnitType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name="Item")
 @NoArgsConstructor
@@ -36,6 +39,11 @@ public class Item {
 
     @Column(name="active_state", columnDefinition = "TINYINT default 0")
     private boolean active;
+
+    @OneToMany(mappedBy = "items")
+    private Set<OrderDetails> ordersDetails;
+
+
 
 
 }

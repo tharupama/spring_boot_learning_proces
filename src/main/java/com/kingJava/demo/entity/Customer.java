@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")//defalt take class name as a table name, if you want to change it use @Table annotation
@@ -37,6 +38,11 @@ public class Customer {
 
     @Column(name="active_state", columnDefinition = "TINYINT default 0")
     private boolean active;
+
+    @OneToMany(mappedBy="customer")
+    private Set<Order> orders;//column hadenne na
+
+
 
     public Customer() {
     }

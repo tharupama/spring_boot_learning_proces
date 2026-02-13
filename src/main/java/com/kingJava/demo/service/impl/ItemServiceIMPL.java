@@ -1,14 +1,19 @@
 package com.kingJava.demo.service.impl;
 
+import com.kingJava.demo.dto.paginated.PaginatedResponseItemDTO;
 import com.kingJava.demo.dto.request.ItemSaveRequestDTO;
 import com.kingJava.demo.dto.response.ItemGetResponseDTO;
 import com.kingJava.demo.entity.Item;
+import com.kingJava.demo.exception.NotFoundException;
 import com.kingJava.demo.repo.ItemRepo;
 import com.kingJava.demo.service.ItemService;
 import com.kingJava.demo.util.mappers.ItemMapper;
+import jakarta.validation.constraints.Max;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,5 +75,28 @@ public class ItemServiceIMPL implements ItemService {
         }else {
             throw new RuntimeException("Item not find");
         }
+    }
+
+    @Override
+    public List<ItemGetResponseDTO> getItemsByActiveStatus(boolean activeStatus) {
+        List<Item> items = itemRepo.findAllByActiveEquals(activeStatus);
+
+        if(!items.isEmpty()){
+            List<ItemGetResponseDTO> itemGetResponseDTOS = modelMapper.map(items,new TypeToken<List<ItemGetResponseDTO>>(){}.getType());
+            return itemGetResponseDTOS;
+        }else {
+            throw new NotFoundException("no items to match your active status");
+        }
+    }
+
+    @Override
+    public PaginatedResponseItemDTO getItemsByActiveStatusWithPagination(boolean activeStatus, int page, @Max(50) int size) {
+        Page<Item> item = itemRepo.findAllByActiveEquals(activeStatus,PageRequest.of(page,size));
+        if(item.isEmpty()){
+            throw new NotFoundException("no items to match your active status");
+        }
+        PaginatedResponseItemDTO paginatedResponseDTO = new PaginatedResponseItemDTO(itemMapper.ListDTOToPage(item), itemRepo.countAllByActiveEquals(activeStatus));
+
+        return  paginatedResponseDTO;
     }
 }
